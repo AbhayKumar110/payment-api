@@ -1,74 +1,3 @@
-# from datetime import datetime
-# import uuid
-# from fastapi import APIRouter, Depends
-# from sqlalchemy.orm import Session
-# from .database import SessionLocal
-# from .models import Payment
-# from .schemas import PaymentRequest, PaymentResponse
-
-# router = APIRouter()
-
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
-
-# # @router.post("/payments", response_model=PaymentResponse)
-# # def create_payment(payment: PaymentRequest, db: Session = Depends(get_db)):
-# #     new_payment = Payment(
-# #         amount=payment.amount,
-# #         currency=payment.currency,
-# #         sender_mobile=payment.sender_mobile,
-# #         receiver_mobile=payment.receiver_mobile,
-# #         status="PENDING"
-# #     )
-
-# #     db.add(new_payment)      # prepare INSERT
-# #     db.commit()              # execute SQL
-# #     db.refresh(new_payment)  # get ID
-
-# #     return {
-# #         "payment_id": new_payment.id,
-# #         "status": new_payment.status
-# #     }
-
-# @router.post("/payments", response_model=PaymentResponse)
-# def create_payment(payment: PaymentRequest, db: Session = Depends(get_db)):
-
-   
-#     sender_last4 = payment.sender_mobile[-4:]
-#     receiver_last4 = payment.receiver_mobile[-4:]
-
-#     # timestamp = datetime.utcnow().strftime("%Y%m%dT%H%M%S")
-#     timestamp = datetime.now().strftime("%Y%m%dT%H%M%S")
-
-#     random_part = uuid.uuid4().hex[:4].upper()
-
-
-#     payment_uid = f"PAY_{sender_last4}_{receiver_last4}_{timestamp}_{random_part}"
-
-#     new_payment = Payment(
-#         payment_uid=payment_uid,   
-#         amount=payment.amount,
-#         currency=payment.currency,
-#         sender_mobile=payment.sender_mobile,
-#         receiver_mobile=payment.receiver_mobile,
-#         status="PENDING"
-#     )
-
-#     db.add(new_payment)     # prepare INSERT
-#     db.commit()             # execute SQL
-#     db.refresh(new_payment) # get ID
-
-#     return {
-#         "payment_id": new_payment.id,
-#         "payment_uid": new_payment.payment_uid,  
-#         "status": new_payment.status
-#     }
-
-
 from datetime import datetime
 import os
 import uuid
@@ -150,23 +79,6 @@ def create_payment(
         "payment_uid": new_payment.payment_uid,  
         "status": new_payment.status
     }
-# 3.106.119.129
-
-
-# @router.get("/payments/{payment_uid}", response_model=PaymentResponse)
-# def get_payment_by_uid(
-#     payment_uid: str,
-#     db: Session = Depends(get_db),
-#     api_key: str = Depends(verify_api_key)
-# ):
-#     payment = db.query(Payment).filter(
-#         Payment.payment_uid == payment_uid
-#     ).first()
-
-#     if not payment:
-#         raise HTTPException(status_code=404, detail="Payment not found")
-
-#     return payment
 
 @router.get("/payments/{payment_uid}", response_model=PaymentResponse)
 def get_payment_by_uid(
